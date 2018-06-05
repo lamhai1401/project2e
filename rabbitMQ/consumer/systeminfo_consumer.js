@@ -1,6 +1,6 @@
 const func          = require('../func');
 const hardware      = require('../../foundation/hardware');
-const convertJSON   = require('../../foundation/string').convertJSON;
+const convertJSON   = require('../../method').string.convertJSON;
 const socket_server = require('../../socket/server');
 
 function system_consumer(socket_server, conn) {
@@ -18,15 +18,17 @@ function system_consumer(socket_server, conn) {
     ch.prefetch(10);
 
     // create percific exchange
-    const exchange = 'system_infomation';
-    ch.assertExchange(exchange, 'fanout', {durable: false});
+    const exchange = 'system_data';
+    const routing_key = 'system_infomation';
+    
+    ch.assertExchange(exchange, 'direct', {durable: false});
 
     // binding message
     ch.assertQueue("", {exclusive: true}, (err, q) => {
       if(func.closeOnErr(err)) return;
       console.log('  [AMQP] System infomation exchange waiting for logs');
 
-      ch.bindQueue(q.queue, exchange, '');
+      ch.bindQueue(q.queue, exchange, routing_key);
 
       ch.consume(q.queue, msg => {
         ch.ack(msg);

@@ -10,12 +10,12 @@ LOGGER = logging.getLogger(__name__)
 
 # publisher
 class ProcessDetailPublisher(object):
-  EXCHANGE = 'process_detail'
-  EXCHANGE_TYPE = 'fanout'
+  EXCHANGE = 'system_data'
+  EXCHANGE_TYPE = 'direct'
   # delay for every message
   PUBLISH_INTERVAL = 1
   QUEUE = ''
-  ROUTING_KEY = ''
+  ROUTING_KEY = 'process_running'
   # using psutil here for send message
   MESSAGE = process_summary()
 
