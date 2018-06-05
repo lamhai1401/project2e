@@ -62,14 +62,14 @@ app.use(handler);
 app.use(ippublic);
 
 /* add private router */
-const user_router       = require('./route/user_router');
-const account_router    = require('./route/account_router');
+// const user_router       = require('./route/user_router');
+// const account_router    = require('./route/account_router');
 
 /* linked router to app */
-app.use('/api/v1', [
-    user_router,
-    account_router,
-]);
+// app.use('/api/v1', [
+//     user_router,
+//     account_router,
+// ]);
 
 // app.get("/", (req, res) => {
 //     console.log(req.body.ipinfo);
