@@ -1,5 +1,5 @@
-from systeminfo.Systeminfo_publisher import SystemInfoPublisher 
-from systeminfo.Process_detail_publisher import ProcessDetailPublisher
+from systeminfo.Systeminfo_publisher import SystemInfoPublisher
+from systeminfo.Disk_info_publisher import DiskInfoPublisher
 # from mongodb.MongoProducer import MongoPublisher
 import logging
 import _thread
@@ -13,17 +13,20 @@ def main():
 	logging.basicConfig(level=logging.DEBUG, format=LOG_FORMAT)
 
   # Connect to localhost:5672 as guest with the password guest and virtual host "/" (%2F)
-	systeminfo = SystemInfoPublisher('amqp://guest:guest@localhost:5672/%2F?connection_attempts=3&heartbeat_interval=3600')
+	# systeminfo = SystemInfoPublisher('amqp://guest:guest@localhost:5672/%2F?connection_attempts=3&heartbeat_interval=3600')
 	# processdetail = ProcessDetailPublisher('amqp://guest:guest@localhost:5672/%2F?connection_attempts=3&heartbeat_interval=3600')
 	# mongodata = MongoPublisher('amqp://guest:guest@localhost:5672/%2F?connection_attempts=3&heartbeat_interval=3600')
+	diskinfo = DiskInfoPublisher('amqp://guest:guest@localhost:5672/%2F?connection_attempts=3&heartbeat_interval=3600')
 	try:
-		systeminfo.run()
+		diskinfo.run()
+		# systeminfo.run()
 		# processdetail.run()
 		#_thread.start_new_thread( systeminfo.run(), ())
 		#mongodata.run()
 	except KeyboardInterrupt:
-		systeminfo.stop()
-		#mongodata.stop()
+		diskinfo.stop()
+		# systeminfo.stop()
+		# mongodata.stop()
 		# processdetail.stop()
 
 	# try:

@@ -1,5 +1,4 @@
-from systeminfo.Systeminfo_publisher import SystemInfoPublisher 
-from systeminfo.Process_detail_publisher import ProcessDetailPublisher
+from systeminfo.Process_running_publisher import ProcessDetailPublisher
 import logging
 
 LOG_FORMAT = ('%(levelname) -10s %(asctime)s %(name) -30s %(funcName) '
@@ -10,7 +9,6 @@ def main():
   logging.basicConfig(level=logging.DEBUG, format=LOG_FORMAT)
 
   # Connect to localhost:5672 as guest with the password guest and virtual host "/" (%2F)
-  #systeminfo = SystemInfoPublisher('amqp://localhost')
   processdetail = ProcessDetailPublisher('amqp://localhost')
   try:
       processdetail.run()

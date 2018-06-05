@@ -1,4 +1,4 @@
-from libraries.mongo import get_mongodata
+from libraries.system import partition_info
 import os
 import logging
 import json
@@ -9,15 +9,15 @@ LOG_FORMAT = ('%(levelname) -10s %(asctime)s %(name) -30s %(funcName) '
 LOGGER = logging.getLogger(__name__)
 
 # publisher
-class MongoPublisher(object):
-  EXCHANGE = 'system_Data'
+class DiskInfoPublisher(object):
+  EXCHANGE = 'system_data'
   EXCHANGE_TYPE = 'direct'
   # delay for every message
   PUBLISH_INTERVAL = 1
   QUEUE = ''
-  ROUTING_KEY = 'mongo_info'
+  ROUTING_KEY = 'disk_info'
   # using psutil here for send message
-  MESSAGE = get_mongodata()
+  MESSAGE = partition_info()
 
   def __init__(self, amqp_url):
     self._connection = None
@@ -279,7 +279,7 @@ class MongoPublisher(object):
     if self._stopping:
         return
     # adjust here to send realtime infomation
-    message = get_mongodata()
+    message = partition_info()
     properties = pika.BasicProperties(app_id='processdetail-publisher',
                                       content_type='application/json',
                                       )

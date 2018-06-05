@@ -1,7 +1,6 @@
 const func          = require('../func');
 const hardware      = require('../../foundation/hardware');
 const socket_server = require('../../socket/server');
-const mongo_info    = require('../../models').MongoInfo;
 
 function system_consumer(socket_server, conn) {
   conn.createChannel((err, ch) => {
@@ -19,21 +18,23 @@ function system_consumer(socket_server, conn) {
 
     // create percific exchange
     const exchange = 'system_data';
-    const routing_key = 'mongo_info'
+    const routing_key = 'disk_info';
+    
     ch.assertExchange(exchange, 'direct', {durable: false});
 
     // binding message
     ch.assertQueue("", {exclusive: true}, (err, q) => {
       if(func.closeOnErr(err)) return;
-      console.log('  [AMQP] Mongo infomation exchange waiting for logs');
+      console.log('  [AMQP] System infomation exchange waiting for logs');
 
       ch.bindQueue(q.queue, exchange, routing_key);
 
       ch.consume(q.queue, msg => {
         ch.ack(msg);
-        console.log('Receive [ %s ] from server', msg.content.toString());
-        socket_server.receiveMongoInfo(JSON.parse(msg.content.toString()));
-        mongo_info.create(JSON.parse(msg.content.toString()));
+        console.log(JSON.parse(msg.content.toString()).C);
+        // console.log('Receive [ %s ] from server', msg.content.toString());
+        // socket_server.receiveSystemInfo(convertJSON(msg.content.toString()));
+        // hardware(convertJSON(msg.content.toString()));
       }, {noAck: false});
     });
   });

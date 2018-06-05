@@ -122,9 +122,10 @@ def partition_info():
                                                    bytes2human(usage.free), usage.percent, part.fstype, part.mountpoint])
         partition = {"total": total, "used": used, "free": free, "percent_used": percent_use, "type": typed, "mount": mount}
         disk.update({part.device[:-2]: partition})
+    print(disk)
     return disk
 
-# get system infomation
+# get system infomation dict output array["attribute"]
 @timeit
 def get_information():   
     info = {}
