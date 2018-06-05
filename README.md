@@ -71,14 +71,14 @@ $ node server.js
 Step 5: Install nescessary package python modules
 
 ```
-$ cd pythoncode
 $ conda install psutil pika
 ```
 
-Step 6: Open new terminal and run this file send.py
+Step 6: Open 2 new terminals and run this two (rabbitMQ/producer)
 
 ```
-$ python send.py
+$ python start.py (thread 1)
+$ python start2.py (thread2)
 ```
 
 Go to this link: localhost:PORT to check demo.
