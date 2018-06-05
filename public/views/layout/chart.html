@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Chart and CSS -->
+    <script type="text/javascript" src="/public/js/smoothie.js"></script>
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <link rel="stylesheet" href="/public/assets/css/chart.css">
+    <link rel="stylesheet" href="/public/assets/css/search_bar.css">
+    <!-- Bootstrap CSS -->
+    <!-- <link rel="stylesheet" href="/public/assets/css/bootstrap.min.css"> -->
+  </head>
+  <body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.material.min.js"></script>
+    
+    <div class="chart">
+      <h2>Percent CPU Chart</h2>
+      <canvas id="pcpu" width="700" height="200"></canvas>
+      <script type="text/javascript" src="/public/js/pcpuchart.js" ></script>
+    </div>
+  
+    <div class="chart">
+      <h2>Percent MEM Chart</h2>
+      <canvas id="pmem" width="700" height="200"></canvas>
+      <script type="text/javascript" src="/public/js/pmemchart.js" ></script>
+    </div>
+    
+    <div class="sys_info">
+      <div>
+        <table id="process_detail" class="mdl-data-table mdl-js-data-table">
+          <td id="process"></td>
+          <td id="ram"></td>
+          <td id="cpu"></td>
+        </table>
+      </div>
+
+      <!-- search bar -->
+      <div class="search-wrapper">
+        <div class="input-holder">
+            <input type="text" class="search-input" placeholder="Type to search" onkeyup="search();" id="searchInput" />
+            <button class="search-icon" onclick="searchToggle(this, event);"><span></span></button>
+        </div>
+        <span class="close" onclick="searchToggle(this, event);"></span>
+    </div>
+    </div>
+
+    <div id="app">
+        <div style="font-weight: bold; text-align: center"><h3>Running Process</h3></div>
+      <table id="process_detail" class="mdl-data-table mdl-js-data-table" style="width:50%">
+        <thead>
+          <th>PID</th>
+          <th>USER</th>
+          <th>PROCESS NAME</th>
+          <th>PERCENT CPU</th>
+          <th>PERCENT MEM</th>
+          <th>START AT</th>
+          <th>DURATION</th>
+          <th>STATUS</th>
+        </thead>
+        <tbody>
+          <tr class="searchList" v-for="process in processes">
+            <td>{{process.pid}}</td>
+            <td>{{process.detail.user}}</td>
+            <td><a class="detail-name" href="">{{process.detail.name}}</a></td>
+            <td>{{process.detail.pcpu}}</td>
+            <td>{{process.detail.pmem}}</td>
+            <td>{{process.detail.startAt}}</td>
+            <td>{{process.detail.duration}}</td>
+            <td>{{process.detail.status}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="exitcode">
+      <div style="font-weight: bold; text-align: center"><h3>Exitting Process</h3></div>
+      <table id="process_exitcode" class="mdl-data-table mdl-js-data-table">
+        <thead>
+          <th class="header">PID</th>
+          <th class="header">PROCESS NAME</th>
+          <th class="header">EXITCODE</th>
+        </thead>
+        <tbody>
+          <tr v-for="exitcode in exitcodes">
+            <td>{{ exitcode.pid }}</td>
+            <td>{{ exitcode.name  }}</td>
+            <td>{{ exitcode.exitcode  }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="/public/js/process_detail.js"></script>
+    <script src="/public/js/process_exitcode.js"></script>
+    <script src="/public/js/search_toggle.js"></script>
+  </body>
+</html>
+

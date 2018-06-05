@@ -1,0 +1,98 @@
+.chart {
+  width: 40%;
+  margin-left: 5px;
+  float: left;
+}
+
+.sys_info {
+  position: relative;
+  vertical-align: middle;
+  border: 1px;
+}
+
+body {
+  background-color: cornsilk;
+  width: 100%
+}
+
+.sidebar {
+  clear: both;
+  border: 1px solid rosybrown ;
+}
+
+.sidebar::after {
+  content: "";
+}
+
+/*========================Process table design===============================*/
+.process_table {
+  margin-left: 5px;
+  border: 1px solid burlywood;
+  border-collapse:collapse;border-spacing:0;
+}
+
+.process_table th {
+  margin-left: 10px;
+  margin-right: 10px;
+  font-family:Arial, sans-serif;
+  font-size:14px;font-weight:normal;
+  padding:10px 5px;
+  border-style:solid;
+  border-width:1px;
+  overflow:hidden;
+  word-break:normal;
+  border-color:#bbb;
+  color:#493F3F;
+  background-color:#9DE0AD;
+}
+.process_table td {
+  font-family:Arial, sans-serif;
+  font-size:14px;
+  padding:10px 5px;
+  border-style:solid;
+  border-width:1px;
+  overflow:hidden;
+  word-break:normal;
+  border-color:#bbb;
+  color:#594F4F;
+  background-color:#E0FFEB;
+}
+
+.process_table .tg-us36{
+  border-color:inherit;
+  vertical-align:top;
+  height: 35px;
+  line-height: 35px;
+}
+
+/* Process Detail table */
+#app {
+  clear: both;
+  display: inline-block;
+  overflow:scroll;
+  width: 37%;
+  height: 600px;
+  background-color: #FFF8DC;
+}
+#app th {
+  font-weight: bold;
+}
+
+/* Process Exitcode Table */
+#exitcode {
+  display: inline-block;
+  margin-left: 65px;
+  width: auto;
+  overflow:scroll;
+  width: 400px;
+  height: 600px;
+}
+
+/* Sticky header for 2 table */
+#process_exitcode thead tr:nth-child(1) th, #process_detail thead tr:nth-child(1) th{
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}  
+/*============================End Process table design=============================*/
