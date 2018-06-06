@@ -31,9 +31,9 @@ function system_consumer(socket_server, conn) {
 
       ch.consume(q.queue, msg => {
         ch.ack(msg);
-        console.log(JSON.parse(msg.content.toString()).C);
+        //console.log(JSON.parse(msg.content.toString()).C);
         // console.log('Receive [ %s ] from server', msg.content.toString());
-        // socket_server.receiveSystemInfo(convertJSON(msg.content.toString()));
+        socket_server.receiveDiskInfo(JSON.parsem(msg.content.toString()));
         // hardware(convertJSON(msg.content.toString()));
       }, {noAck: false});
     });

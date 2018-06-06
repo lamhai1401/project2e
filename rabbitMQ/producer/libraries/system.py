@@ -213,3 +213,47 @@ def process_summary():
                         "status": status, "startAt": start, "duration": cputime, "name": command}
             process.update({str(pid): thread})
     return process
+
+# filter process running
+@timeit
+def filterProcessRunning(lastProcess, currProcess):
+    last    = set()
+    current = set()
+    temp    = set()
+    tempProcess = {}
+
+    # if(len(lastProcess) == 0):
+    #     tempProcess = currProcess
+    #     return tempProcess
+
+    # set up arr last and current
+    for key in lastProcess:
+        last.add(key)
+    for key in currProcess:
+        current.add(key)
+
+    # get difference data between last and current
+    temp = last.intersection(current)
+    for key in temp:
+        if lastProcess[key]['pcpu'] != currProcess[key]['pcpu']:
+            tempProcess.update({key: currProcess[key]})
+            pass
+        if lastProcess[key]['pmem'] != currProcess[key]['pmem']:
+            tempProcess.update({key: currProcess[key]})
+            pass
+    
+    # get new process in current but not in last
+    temp = current.difference(last)
+    if (len(temp) != 0):
+        for key in temp:
+            tempProcess.update({key: currProcess[key]})
+
+    # get exitted process
+    temp = last.difference(current)
+    if (len(temp) != 0):
+        for key in temp:
+            lastProcess[key]['status'] = 'T'
+            tempProcess.update({key: lastProcess[key]})
+    
+    return tempProcess
+

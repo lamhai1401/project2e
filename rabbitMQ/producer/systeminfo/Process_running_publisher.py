@@ -1,4 +1,4 @@
-from libraries.system import process_summary
+from libraries.system import process_summary, filterProcessRunning
 import os
 import logging
 import json
@@ -18,6 +18,9 @@ class ProcessDetailPublisher(object):
   ROUTING_KEY = 'process_running'
   # using psutil here for send message
   MESSAGE = process_summary()
+
+  # last process running
+  LAST_PROCESS = {}
 
   def __init__(self, amqp_url):
     self._connection = None
@@ -279,7 +282,9 @@ class ProcessDetailPublisher(object):
     if self._stopping:
         return
     # adjust here to send realtime infomation
-    message = process_summary()
+    CURRENT_PROCESS = process_summary()
+    message = filterProcessRunning(self.LAST_PROCESS, CURRENT_PROCESS)
+    self.LAST_PROCESS = CURRENT_PROCESS
     properties = pika.BasicProperties(app_id='processdetail-publisher',
                                       content_type='application/json',
                                       )

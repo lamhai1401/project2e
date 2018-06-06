@@ -48,16 +48,16 @@ app.use(haltOnTimedout);
 app.use(body.json());
 app.use(body.urlencoded({extended: true}));
 
-app.use(methodOverride('X-HTTP-Method'));          // Microsoft
-app.use(methodOverride('X-HTTP-Method-Override')); // Google/GData
-app.use(methodOverride('X-Method-Override'));      // IBM 
-app.use(methodOverride('X-Forwarded-For'));        // get public ip
-app.use(methodOverride('X-Forwarded-Port'));
+// app.use(methodOverride('X-HTTP-Method'));          // Microsoft
+// app.use(methodOverride('X-HTTP-Method-Override')); // Google/GData
+// app.use(methodOverride('X-Method-Override'));      // IBM 
+// app.use(methodOverride('X-Forwarded-For'));        // get public ip
+// app.use(methodOverride('X-Forwarded-Port'));
 
 app.use(logger('dev'));
 app.use(errorhandler());
-app.use(lusca.xframe('SAMEORIGIN'));
-app.use(lusca.xssProtection(true));
+// app.use(lusca.xframe('SAMEORIGIN'));
+// app.use(lusca.xssProtection(true));
 
 /* add private middleware */
 app.use(handler);
