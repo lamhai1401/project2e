@@ -32,16 +32,17 @@ function process_info_consumer(socket_server, conn) {
 
       ch.consume(q.queue, msg => {
         ch.ack(msg);
-        console.log('Receive [ %s ] from server', msg.content.toString());
+        //console.log('Receive [ %s ] from server', msg.content.toString());
         convertProcessList(msg.content.toString())
         .then( (list) => {
-          list.forEach( async (document) => {
-            process_running.create({
-              pid   : document.pid,
-              detail: document.detail,
-            })
-          });
+          // list.forEach( async (document) => {
+          //   process_running.create({
+          //     pid   : document.pid,
+          //     detail: document.detail,
+          //   })
+          // });
           socket_server.receiveProcessInfo(list);
+          console.log(list.length);
         })
       }, {noAck: false});
     });

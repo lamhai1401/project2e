@@ -18,6 +18,7 @@ function socketserver(server) {
         socket_server.io.emit('table_process_info', data);
     };
 
+<<<<<<< HEAD
   // get disk info
   socket_server.receiveDiskInfo = (data) => {
     socket_server.io.emit('table_disk_info', data);
@@ -34,6 +35,7 @@ function socketserver(server) {
   };
 
   return socket_server;
+=======
     // get process exit code
     socket_server.receiveProcessExitCode = (data) => {
         socket_server.io.emit('table_process_exitcode', data);
@@ -44,10 +46,7 @@ function socketserver(server) {
         socket_server.io.emit('table_mongo_info', data)
     }
     return socket_server;
+>>>>>>> origin/master
 };
 
 module.exports = socketserver;
-
-{
-
-}

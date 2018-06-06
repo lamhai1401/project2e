@@ -1,1 +1,5 @@
-{}
+{
+  "SERVER": {
+    "PORT": "NODE_PORT"
+  }
+}

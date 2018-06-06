@@ -30,7 +30,7 @@ socket.on('chart_system_cpu', function (d) {
     var time = new Date();
     var cpu = Math.random(),
         ram = Math.random();
-    if (data.length > 50) data.shift();
+    // if (data.length > 50) data.shift();
     data.push([time, cpu, ram]);
     g.updateOptions({'file': data});
 });
