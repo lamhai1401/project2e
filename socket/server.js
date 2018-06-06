@@ -18,6 +18,11 @@ function socketserver(server) {
     socket_server.io.emit('table_process_info', data);
   };
 
+  // get disk info
+  socket_server.receiveDiskInfo = (data) => {
+    socket_server.io.emit('table_disk_info', data);
+  }
+
   // get process exit code
   socket_server.receiveProcessExitCode = (data) => {
     socket_server.io.emit('table_process_exitcode', data);
@@ -26,7 +31,8 @@ function socketserver(server) {
   // get mongo infomation
   socket_server.receiveMongoInfo = (data) => {
     socket_server.io.emit('table_mongo_info', data)
-  }
+  };
+
   return socket_server;
 };
 
