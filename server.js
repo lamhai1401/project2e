@@ -1,89 +1,104 @@
-/* add necessary libraries */
-const methodOverride= require('method-override');
-const errorhandler  = require('errorhandler');
-const express       = require('express');
-const timeout       = require('connect-timeout');
-const path          = require('path');
-const logger        = require('morgan');
-const lusca         = require('lusca');
-const body          = require('body-parser');
+#!/usr/bin/env node
 
-/* private middleware libraries */
-const haltOnTimedout= require('./middleware/timeout_middleware');
-const handler       = require('./foundation/AppResponse');
-const ippublic      = require('./middleware/ippublic_middleware');
+/**
+ * Module dependencies.
+ */
 
-/* create server using express and socket */
-const app           = express();
-const server        = require('http').Server(app);
+const app = require('./app');
+const debug = require('debug')('project2e:server');
+const http = require('http');
+const config = require('config');
+const chalk = require('chalk');
+
+/**
+ * Get port from environment and store in Express.
+ */
+const port = normalizePort(config.SERVER.PORT || '3000');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+const server = http.createServer(app);
+
+/**
+ * Create Socket server.
+ */
+
+// const io = require('./socket').init(server);
 const serversocket  = require('./socket/server');
 const server_socket = serversocket(server);
-
-/* Rabbit MQ */
 const startConsumer = require('./rabbitMQ/start');
 startConsumer(server_socket);
-setInterval(function () {
-    server_socket.receiveSystemInfo(111)
-}, 1000);
-/* load enviroment port */
-const port = require('config').SERVER.PORT;
-app.set('port', port || 3000);
+/**
+ * Listen on provided port, on all network interfaces.
+ */
 
-/* add header */
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Credentials", "true");
-    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-    res.header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
-    next();
-});
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
 
-/* add necessary middleware */
-app.use('/public', express.static(path.join(__dirname, 'public')))
-app.use(timeout('10s'), (err, req, res, next) => {
-    if (err) return next(err);
-    if (req.timedout) return;
-});
-app.use(haltOnTimedout);
-app.use(body.json());
-app.use(body.urlencoded({extended: true}));
+/**
+ * Normalize a port into a number, string, or false.
+ */
 
-// app.use(methodOverride('X-HTTP-Method'));          // Microsoft
-// app.use(methodOverride('X-HTTP-Method-Override')); // Google/GData
-// app.use(methodOverride('X-Method-Override'));      // IBM 
-// app.use(methodOverride('X-Forwarded-For'));        // get public ip
-// app.use(methodOverride('X-Forwarded-Port'));
+function normalizePort(val) {
+    let port = parseInt(val, 10);
 
-app.use(logger('dev'));
-app.use(errorhandler());
-// app.use(lusca.xframe('SAMEORIGIN'));
-// app.use(lusca.xssProtection(true));
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
 
-/* add private middleware */
-app.use(handler);
-app.use(ippublic);
+    if (port >= 0) {
+        // port number
+        return port;
+    }
 
-/* add private router */
-// const user_router       = require('./route/user_router');
-// const account_router    = require('./route/account_router');
+    return false;
+}
 
-/* linked router to app */
-// app.use('/api/v1', [
-//     user_router,
-//     account_router,
-// ]);
+/**
+ * Event listener for HTTP server "error" event.
+ */
 
-// app.get("/", (req, res) => {
-//     console.log(req.body.ipinfo);
-//     res.send(req.body.ipinfo);
-// });
+function onError(error) {
+    if (error.syscall !== 'listen') {
+        throw error;
+    }
 
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + "/public/views/layout/chart.html");
-});
+    let bind = typeof port === 'string'
+        ? 'Pipe ' + port
+        : 'Port ' + port;
 
-/* running server */
-server.listen(app.get("port"), () => {
-    console.log(("  [Express] App is running at :%d in %s mode"), app.get("port"), app.get("env"));
-    console.log("  [Express] Press CTRL-C to stop");
-});
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+        case 'EACCES':
+            console.error(bind + ' requires elevated privileges');
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            console.error(bind + ' is already in use');
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+    let addr = server.address();
+    let bind = typeof addr === 'string'
+        ? 'pipe ' + addr
+        : 'port ' + addr.port;
+    debug('Listening on ' + bind);
+    console.log(chalk`
+    [Express] App is running at : {yellow ${app.get("port")}} in {yellow ${app.get("env")}} mode
+    [Express] Press {red CTRL-C} to stop
+`);
+}
