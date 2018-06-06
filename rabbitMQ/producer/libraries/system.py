@@ -40,6 +40,20 @@ PROC_STATUSES_RAW = {
 # if hasattr(psutil, 'STATUS_SUSPENDED'):
 #     PROC_STATUSES_RAW[psutil.STATUS_SUSPENDED] = "V"
 
+
+def timeit(method):
+    def timed(*args, **kw):
+        ts = time.time()
+        result = method(*args, **kw)
+        te = time.time()
+        if 'log_time' in kw:
+            name = kw.get('log_name', method.__name__.upper())
+            kw['log_time'][name] = int((te - ts) * 1000)
+        else:
+            print ('%r  %2.2f miniseconds' % (method.__name__, (te - ts) * 1000))
+        return result
+    return timed
+
 def bytes2human(n):
     # http://code.activestate.com/recipes/578019
     # >>> bytes2human(10000)
@@ -93,6 +107,7 @@ def ifconfig_info():
             ifconfig[nic].update({address: addr.address})   
     return ifconfig
 
+@timeit
 def partition_info():
     disk = {}
     for part in psutil.disk_partitions(all=False):
@@ -107,9 +122,11 @@ def partition_info():
                                                    bytes2human(usage.free), usage.percent, part.fstype, part.mountpoint])
         partition = {"total": total, "used": used, "free": free, "percent_used": percent_use, "type": typed, "mount": mount}
         disk.update({part.device[:-2]: partition})
+    print(disk)
     return disk
 
-# get system infomation
+# get system infomation dict output array["attribute"]
+@timeit
 def get_information():   
     info = {}
     # info["user"] = psutil.users()
@@ -134,6 +151,7 @@ def get_information():
     return info
 
 # get process detail
+@timeit
 def process_summary():
 
     process = {}
@@ -146,6 +164,7 @@ def process_summary():
         attrs.append('terminal')
 
     for p in psutil.process_iter():
+        pass
         try:
             pinfo = p.as_dict(attrs, ad_value='')
         except psutil.NoSuchProcess:

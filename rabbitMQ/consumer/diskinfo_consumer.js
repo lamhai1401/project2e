@@ -1,6 +1,5 @@
 const func          = require('../func');
 const hardware      = require('../../foundation/hardware');
-const convertJSON   = require('../../method').string.convertJSON;
 const socket_server = require('../../socket/server');
 
 function system_consumer(socket_server, conn) {
@@ -19,7 +18,7 @@ function system_consumer(socket_server, conn) {
 
     // create percific exchange
     const exchange = 'system_data';
-    const routing_key = 'system_infomation';
+    const routing_key = 'disk_info';
     
     ch.assertExchange(exchange, 'direct', {durable: false});
 
@@ -32,9 +31,10 @@ function system_consumer(socket_server, conn) {
 
       ch.consume(q.queue, msg => {
         ch.ack(msg);
-        console.log('Receive [ %s ] from server', msg.content.toString());
-        socket_server.receiveSystemInfo(convertJSON(msg.content.toString()));
-        hardware(convertJSON(msg.content.toString()));
+        console.log(JSON.parse(msg.content.toString()).C);
+        // console.log('Receive [ %s ] from server', msg.content.toString());
+        // socket_server.receiveSystemInfo(convertJSON(msg.content.toString()));
+        // hardware(convertJSON(msg.content.toString()));
       }, {noAck: false});
     });
   });

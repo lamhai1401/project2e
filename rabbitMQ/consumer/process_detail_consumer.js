@@ -18,15 +18,17 @@ function process_info_consumer(socket_server, conn) {
     ch.prefetch(10);
 
     // create percific exchange
-    const exchange = 'process_detail';
-    ch.assertExchange(exchange, 'fanout', {durable: false});
+    const exchange = 'system_data';
+    const routing_key = 'process_running';
+
+    ch.assertExchange(exchange, 'direct', {durable: false});
 
     // binding message
     ch.assertQueue("", {exclusive: true}, (err, q) => {
       if(func.closeOnErr(err)) return;
       console.log('  [AMQP] Process running info exchange waiting for logs');
 
-      ch.bindQueue(q.queue, exchange, '');
+      ch.bindQueue(q.queue, exchange, routing_key);
 
       ch.consume(q.queue, msg => {
         ch.ack(msg);

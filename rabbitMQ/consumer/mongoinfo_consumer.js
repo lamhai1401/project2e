@@ -18,15 +18,16 @@ function system_consumer(socket_server, conn) {
     ch.prefetch(10);
 
     // create percific exchange
-    const exchange = 'mongo_info';
-    ch.assertExchange(exchange, 'fanout', {durable: false});
+    const exchange = 'system_data';
+    const routing_key = 'mongo_info'
+    ch.assertExchange(exchange, 'direct', {durable: false});
 
     // binding message
     ch.assertQueue("", {exclusive: true}, (err, q) => {
       if(func.closeOnErr(err)) return;
       console.log('  [AMQP] Mongo infomation exchange waiting for logs');
 
-      ch.bindQueue(q.queue, exchange, '');
+      ch.bindQueue(q.queue, exchange, routing_key);
 
       ch.consume(q.queue, msg => {
         ch.ack(msg);
