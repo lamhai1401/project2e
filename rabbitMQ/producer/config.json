@@ -1,0 +1,10 @@
+{
+  "MONGO": {
+    "URL": "",
+    "HOST": "localhost",
+    "PORT": 27017
+  },
+  "RABITMQ": {
+    "URL": "amqp://byuddgwr:qsZ1qkm3Nr8Vroj6uMz48_TBr9Q8njeB@mustang.rmq.cloudamqp.com/byuddgwr"
+  }
+}
