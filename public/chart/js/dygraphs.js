@@ -5,17 +5,32 @@ for (var i = 10; i >= 0; i--) {
     data.push([x, Math.random(), Math.random()]);
 }
 
-var g = new Dygraph(document.getElementById("div_g"), data,
+var g = new Dygraph(
+    document.getElementById("div_g"),
+    data,
     {
         drawPoints: true,
         showRoller: true,
-        valueRange: [0.0, 1.2],
-        labels: ['Time', 'Random', 'D']
+        // valueRange: [0.0, 1.2],
+        stackedGraph: true,
+        labels: ['Time', 'CPU', 'RAM'],
+        highlightSeriesOpts: {
+            strokeWidth: 6,
+            strokeBorderWidth: 1,
+            highlightCircleSize: 5
+        }
     });
-// It sucks that these things aren't objects, and we need to store state in window.
-window.intervalId = setInterval(function () {
-    var x = new Date();  // current time
-    var y = Math.random();
-    data.push([x, y, Math.random()]);
+
+// Connecting to socket.io
+var socket = io();
+
+// receive system states data from server
+socket.on('chart_system_cpu', function (d) {
+    console.log(d);
+    var time = new Date();
+    var cpu = Math.random(),
+        ram = Math.random();
+    if (data.length > 50) data.shift();
+    data.push([time, cpu, ram]);
     g.updateOptions({'file': data});
-}, 1000);
+});

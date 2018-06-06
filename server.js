@@ -22,9 +22,11 @@ const server_socket = serversocket(server);
 /* Rabbit MQ */
 const startConsumer = require('./rabbitMQ/start');
 startConsumer(server_socket);
-
+setInterval(function () {
+    server_socket.receiveSystemInfo(111)
+}, 1000);
 /* load enviroment port */
-const port = require('./config/config').port;
+const port = require('config').SERVER.PORT;
 app.set('port', port || 3000);
 
 /* add header */

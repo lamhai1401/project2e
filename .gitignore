@@ -5,3 +5,5 @@ modules
 route
 pythoncode
 tooltest
+.idea/
+test/
