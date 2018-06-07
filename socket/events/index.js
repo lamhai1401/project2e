@@ -1,0 +1,19 @@
+const io = require('../index').io;
+
+module.exports = {
+    receiveSystemInfo: (data) => {
+        io.emit('chart_system_cpu', data);
+    },
+    receiveProcessInfo: (data) => {
+        io.emit('table_process_info', data);
+    },
+    receiveDiskInfo: (data) => {
+        io.emit('table_disk_info', data);
+    },
+    receiveProcessExitCode: (data) => {
+        io.emit('table_process_exitcode', data);
+    },
+    receiveMongoInfo: (data) => {
+        io.emit('table_mongo_info', data)
+    }
+};

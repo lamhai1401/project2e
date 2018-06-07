@@ -26,11 +26,9 @@ const server = http.createServer(app);
  * Create Socket server.
  */
 
-// const io = require('./socket').init(server);
-const serversocket  = require('./socket/server');
-const server_socket = serversocket(server);
-const startConsumer = require('./rabbitMQ/start');
-startConsumer(server_socket);
+const io = require('./socket');
+io.attach(server);
+
 /**
  * Listen on provided port, on all network interfaces.
  */
@@ -38,6 +36,12 @@ startConsumer(server_socket);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+/**
+ * Start script (services, ...)
+ * */
+
+require('./start_script');
 
 /**
  * Normalize a port into a number, string, or false.

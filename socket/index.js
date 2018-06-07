@@ -1,17 +1,21 @@
-const socket = require('socket.io');
-let io = null;
+const Server = require('socket.io');
 
-function initEvents(socket) {
+let defaultInstance;
 
-}
+exports.create = function () {
+    let self = this;
+    self.io = new Server();
+    self.io.on('connection', socket => {
+        console.log('  [SocketIO] Socker server connecting');
+    });
 
-module.exports = {
-    io: () => {
-        if (io) throw new Error('Socket doesn\'t exit');
-        return io;
-    },
-    init: (server) => {
-        io = socket(server, {});
-        return io;
+    self.attach = function (server, opts) {
+        //TODO: Verify opts
+        self.io.attach(server, {});
     }
 };
+
+defaultInstance = new exports.create();
+exports.attach = defaultInstance.attach;
+exports.io = defaultInstance.io;
+Object.assign(exports, defaultInstance);
