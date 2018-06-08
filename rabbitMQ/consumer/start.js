@@ -1,6 +1,6 @@
-const controller= require('./consumer/controller');
+const controller= require('./controller');
 const amqp      = require('amqplib/callback_api');
-const url       = require('../config/config').rabbitmq_url;
+const url       = require('../../config/config').rabbitmq_url;
 //const url   = 'amqp://localhost';
 
 /**
@@ -8,7 +8,7 @@ const url       = require('../config/config').rabbitmq_url;
  * If the connection is closed or fails to be established
  * it will try to reconnect.
  */
-function start(socket_server) {
+function start() {
   amqp.connect(url, (err, conn) => {
     
     // try to restart if err
@@ -29,7 +29,7 @@ function start(socket_server) {
     });
 
     console.log("  [AMQP] connected  ");
-    controller(socket_server, conn);
+    controller(conn);
   });
 };
 

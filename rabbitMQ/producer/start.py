@@ -1,6 +1,9 @@
 from systeminfo.Systeminfo_publisher import SystemInfoPublisher
 from systeminfo.Disk_info_publisher import DiskInfoPublisher
+from systeminfo.Process_running_publisher import ProcessDetailPublisher
 # from mongodb.MongoProducer import MongoPublisher
+from mySQL.Mysql_publisher import MySQLStatusPublisher
+from mySQL.Mysql_publisher import MySQLProcessPublisher
 import logging
 import _thread
 
@@ -16,15 +19,18 @@ def main():
 	# systeminfo = SystemInfoPublisher('amqp://guest:guest@localhost:5672/%2F?connection_attempts=3&heartbeat_interval=3600')
 	# processdetail = ProcessDetailPublisher('amqp://guest:guest@localhost:5672/%2F?connection_attempts=3&heartbeat_interval=3600')
 	# mongodata = MongoPublisher('amqp://guest:guest@localhost:5672/%2F?connection_attempts=3&heartbeat_interval=3600')
-	diskinfo = DiskInfoPublisher('amqp://guest:guest@localhost:5672/%2F?connection_attempts=3&heartbeat_interval=3600')
+	# diskinfo = DiskInfoPublisher('amqp://guest:guest@localhost:5672/%2F?connection_attempts=3&heartbeat_interval=3600')
+	mysqlinfo = MySQLStatusPublisher('amqp://guest:guest@localhost:5672/%2F?connection_attempts=3&heartbeat_interval=3600')
 	try:
-		diskinfo.run()
+		mysqlinfo.run()
+		# diskinfo.run()
 		# systeminfo.run()
 		# processdetail.run()
 		#_thread.start_new_thread( systeminfo.run(), ())
 		#mongodata.run()
 	except KeyboardInterrupt:
-		diskinfo.stop()
+		mysqlinfo.stop()
+		# diskinfo.stop()
 		# systeminfo.stop()
 		# mongodata.stop()
 		# processdetail.stop()

@@ -1,9 +1,8 @@
 const func          = require('../func');
-const hardware      = require('../../foundation/hardware');
-const socket_server = require('../../socket/server');
-const mongo_info    = require('../../models').MongoInfo;
+const io            = require('../../../socket/events');
+const mysql_status  = require('../../../models').MysqlStatus;
 
-function system_consumer(socket_server, conn) {
+function mysql_status_consumer(conn) {
   conn.createChannel((err, ch) => {
     // print to cmd if err
     if(func.closeOnErr(err)) return;
@@ -19,24 +18,24 @@ function system_consumer(socket_server, conn) {
 
     // create percific exchange
     const exchange = 'system_data';
-    const routing_key = 'mongo_info'
+    const routing_key = 'mysql_status'
     ch.assertExchange(exchange, 'direct', {durable: false});
 
     // binding message
     ch.assertQueue("", {exclusive: true}, (err, q) => {
       if(func.closeOnErr(err)) return;
-      console.log('  [AMQP] Mongo infomation exchange waiting for logs');
+      console.log('  [AMQP] Mysql status exchange waiting for logs');
 
       ch.bindQueue(q.queue, exchange, routing_key);
 
       ch.consume(q.queue, msg => {
         ch.ack(msg);
-        console.log('Receive [ %s ] from server', msg.content.toString());
-        socket_server.receiveMongoInfo(JSON.parse(msg.content.toString()));
-        mongo_info.create(JSON.parse(msg.content.toString()));
+        //console.log('Receive [ %s ] from server', msg.content.toString());
+        io.receiveMysqlStatus(JSON.parse(msg.content.toString()));
+        mysql_status.create(JSON.parse(msg.content.toString()));
       }, {noAck: false});
     });
   });
 };
 
-module.exports = system_consumer;
+module.exports = mysql_status_consumer;

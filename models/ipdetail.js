@@ -1,6 +1,5 @@
 const connectDB = require('../foundation/connectDB');
-
-const IPdetai_Schema = new connectDB.Schema({
+const IPdetai_Schema = new connectDB.mongoose.Schema({
     ip:     {type: String},
     city:   {type: String},
     region: {type: String},
@@ -18,5 +17,4 @@ const IPdetai_Schema = new connectDB.Schema({
 });
 
 const Ipdetail = connectDB.mongoose.model('Ipdetail',IPdetai_Schema);
-
 module.exports = Ipdetail;

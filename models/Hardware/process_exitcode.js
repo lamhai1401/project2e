@@ -1,7 +1,7 @@
 const connectDB = require('../../foundation/connectDB');
-const moment    = require('../../foundation/moment');
+const moment   = require('../../method').moment;
 
-const ProcessExitcode_Schema = new connectDB.Schema({
+const ProcessExitcode_Schema = new connectDB.mongoose.Schema({
     pid:      {type: String},
     name:     {type: String},
     exitcode: {type: String},

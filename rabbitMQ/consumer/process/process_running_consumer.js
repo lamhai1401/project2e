@@ -1,9 +1,9 @@
 const func                = require('../func');
-const socket_server       = require('../../socket/server');
-const convertProcessList  = require('../../method').string.formatDetail2String;
-const process_running     = require('../../models').Hardware_runnings;
+const io                  = require('../../../socket/events');
+const convertProcessList  = require('../../../method').string.formatDetail2String;
+const process_running     = require('../../../models').Hardware_runnings;
 
-function process_info_consumer(socket_server, conn) {
+function process_info_consumer(conn) {
   conn.createChannel((err, ch) => {
     // print to cmd if err
     if(func.closeOnErr(err)) return;
@@ -32,17 +32,17 @@ function process_info_consumer(socket_server, conn) {
 
       ch.consume(q.queue, msg => {
         ch.ack(msg);
-        //console.log('Receive [ %s ] from server', msg.content.toString());
+        console.log('Receive [ %s ] from server', msg.content.toString());
         convertProcessList(msg.content.toString())
         .then( (list) => {
-          // list.forEach( async (document) => {
-          //   process_running.create({
-          //     pid   : document.pid,
-          //     detail: document.detail,
-          //   })
-          // });
-          socket_server.receiveProcessInfo(list);
-          console.log(list.length);
+          list.forEach( async (document) => {
+            process_running.create({
+              pid   : document.pid,
+              detail: document.detail,
+            })
+          });
+          io.receiveProcessInfo(list);
+          //console.log(list.length);
         })
       }, {noAck: false});
     });

@@ -1,5 +1,8 @@
 {
   "SERVER": {
     "PORT": "NODE_PORT"
+  },
+  "MONGODB": {
+    "URI": "MONGODB_URL"
   }
 }

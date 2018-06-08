@@ -1,1 +1,21 @@
-{}
+{
+  "MONGODB": {
+    "URI": "mongodb://localhost/test",
+    "HOST": "ds247670.mlab.com",
+    "PORT": 47670,
+    "USER": "dev",
+    "PASSWORD": "dev123456",
+    "DB": "monitor"
+  },
+  "RABITMQ": {
+    "URI": "",
+    "HOST": "",
+    "PORT": "",
+    "USER": "",
+    "PASSWORD": ""
+  },
+  "EMAIL": {
+    "USER": "",
+    "PASSWORD": ""
+  }
+}
