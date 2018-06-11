@@ -255,3 +255,20 @@ def filterProcessRunning(lastProcess, currProcess):
             tempProcess.update({key: lastProcess[key]})
     
     return tempProcess
+
+# get network traffic
+@timeit
+def get_network_traffic():
+    ethernet = (psutil.net_io_counters(pernic=True)['Ethernet'])
+    result = {
+        'bytes_sent': str(ethernet[0]),
+        'bytes_recv': str(ethernet[1]),
+        'packets_sent': str(ethernet[2]),
+        'packets_recv': str(ethernet[3]),
+        'error_in': str(ethernet[4]),
+        'error_out': str(ethernet[5]),
+        'drop_in': str(ethernet[6]),
+        'drop_out': str(ethernet[7])
+    }
+    return result
+
