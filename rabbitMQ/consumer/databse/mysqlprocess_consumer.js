@@ -30,7 +30,7 @@ function mysql_status_consumer(conn) {
 
       ch.consume(q.queue, msg => {
         ch.ack(msg);
-        console.log('Receive [ %s ] from server', msg.content.toString());
+        // console.log('Receive [ %s ] from server', msg.content.toString());
         io.receiveMysqlProcess(JSON.parse(msg.content.toString()));
         mysql_process.create(JSON.parse(msg.content.toString()));
       }, {noAck: false});

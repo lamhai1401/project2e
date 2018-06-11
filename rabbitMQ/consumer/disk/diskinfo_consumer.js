@@ -1,5 +1,7 @@
-const func          = require('../func');
-const io            = require('../../../socket/events');
+const func              = require('../func');
+const io                = require('../../../socket/events');
+const formatDiskinfo    = require('../../../method').string.formatDiskinfo;
+const diskinfo          = require('../../../models').Disk_info;
 
 function diskinfo_consumer(conn) {
   conn.createChannel((err, ch) => {
@@ -31,7 +33,14 @@ function diskinfo_consumer(conn) {
       ch.consume(q.queue, msg => {
         ch.ack(msg);
         // console.log(JSON.parse(msg.content.toString()).C);
-        // console.log('Receive [ %s ] from server', msg.content.toString());
+        //console.log('Receive [ %s ] from server', msg.content.toString());
+        formatDiskinfo(msg.content.toString())
+        .then(list => {
+          list.forEach( async (document) => {
+            diskinfo.create({name: document.name, detail: document.detail});
+          });
+          io.receiveProcessInfo(list);
+        })
         io.receiveDiskInfo(JSON.parse(msg.content.toString()));
       }, {noAck: false});
     });

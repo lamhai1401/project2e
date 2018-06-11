@@ -10,9 +10,12 @@ module.exports = {
     receiveDiskInfo: (data) => {
         io.emit('table_disk_info', data);
     },
-    receiveProcessExitCode: (data) => {
-        io.emit('table_process_exitcode', data);
+    receiveNetworkTraffic: (data) => {
+        io.emit('table_network_traffic', data);
     },
+    // receiveProcessExitCode: (data) => {
+    //     io.emit('table_process_exitcode', data);
+    // },
     receiveMongoInfo: (data) => {
         io.emit('table_mongo_info', data);
     },

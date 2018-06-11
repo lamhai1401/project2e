@@ -6,11 +6,12 @@ System infomation dashboard
 
 This project running on localhost. It will show you 5 realtime tables (delay about 1s):
 
-* Percent of CPU
-* Percent of Memories
-* Running Process Detail
-* Exitting Process
+* Percent of CPU, Memories, total Process running
+* Running Process running detail
+* Network traffic
+* Disk info
 * Summary of cpu, ram and total runnings process
+* Database(mongo, mysql) info
 
 ### Prerequisites
 
@@ -77,8 +78,7 @@ $ conda install psutil pika
 Step 6: Open 2 new terminals and run this two (rabbitMQ/producer)
 
 ```
-$ python start.py (thread 1)
-$ python start2.py (thread2)
+$ python start.py 
 ```
 
 Go to this link: localhost:PORT to check demo.
