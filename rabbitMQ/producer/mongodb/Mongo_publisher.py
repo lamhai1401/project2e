@@ -10,7 +10,7 @@ LOGGER = logging.getLogger(__name__)
 
 # publisher
 class MongoPublisher(object):
-  EXCHANGE = 'system_Data'
+  EXCHANGE = 'system_data'
   EXCHANGE_TYPE = 'direct'
   # delay for every message
   PUBLISH_INTERVAL = 1

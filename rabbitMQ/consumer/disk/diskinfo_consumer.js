@@ -1,8 +1,7 @@
 const func          = require('../func');
-const hardware      = require('../../foundation/hardware');
-const socket_server = require('../../socket/server');
+const io            = require('../../../socket/events');
 
-function system_consumer(socket_server, conn) {
+function diskinfo_consumer(conn) {
   conn.createChannel((err, ch) => {
     // print to cmd if err
     if(func.closeOnErr(err)) return;
@@ -25,19 +24,18 @@ function system_consumer(socket_server, conn) {
     // binding message
     ch.assertQueue("", {exclusive: true}, (err, q) => {
       if(func.closeOnErr(err)) return;
-      console.log('  [AMQP] System infomation exchange waiting for logs');
+      console.log('  [AMQP] Disk info exchange waiting for logs');
 
       ch.bindQueue(q.queue, exchange, routing_key);
 
       ch.consume(q.queue, msg => {
         ch.ack(msg);
-        //console.log(JSON.parse(msg.content.toString()).C);
+        // console.log(JSON.parse(msg.content.toString()).C);
         // console.log('Receive [ %s ] from server', msg.content.toString());
-        socket_server.receiveDiskInfo(JSON.parsem(msg.content.toString()));
-        // hardware(convertJSON(msg.content.toString()));
+        io.receiveDiskInfo(JSON.parse(msg.content.toString()));
       }, {noAck: false});
     });
   });
 };
 
-module.exports = system_consumer;
+module.exports = diskinfo_consumer;

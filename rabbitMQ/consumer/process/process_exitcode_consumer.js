@@ -1,9 +1,9 @@
 const func                = require('../func');
-const socket_server       = require('../../socket/server');
-const convertJSON         = require('../../foundation/string').convertJSON;
-const hardware_exitcode   = require('../../models').Hardware_exitcode;
+const io                  = require('../../../socket/events');
+const convertJSON         = require('../../../method').string.convertJSON;
+const hardware_exitcode   = require('../../../models').Hardware_exitcode;
 
-function process_exitcode_consumer(socket_server, conn) {
+function process_exitcode_consumer(conn) {
   conn.createChannel((err, ch) => {
     // print to cmd if err
     if(func.closeOnErr(err)) return;
@@ -32,7 +32,7 @@ function process_exitcode_consumer(socket_server, conn) {
         ch.ack(msg);
         // console.log('Receive [ %s ] from server', msg.content.toString());
         hardware_exitcode.create(convertJSON(msg.content.toString()));
-        socket_server.receiveProcessExitCode(convertJSON(msg.content.toString()));
+        io.receiveProcessExitCode(convertJSON(msg.content.toString()));
       }, {noAck: false});
     });
   });

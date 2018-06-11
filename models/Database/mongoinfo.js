@@ -1,6 +1,6 @@
-const connectDB = require('../foundation/connectDB');
+const connectDB = require('../../foundation/connectDB');
 
-const Mongoinfo_Schema = new connectDB.Schema({
+const Mongoinfo_Schema = new connectDB.mongoose.Schema({
     opcounters: {
       total : {type: String}, 
       insert: {type: String}, 
@@ -25,5 +25,4 @@ const Mongoinfo_Schema = new connectDB.Schema({
 });
 
 const MongoInfo = connectDB.mongoose.model('Mongoinfos',Mongoinfo_Schema);
-
 module.exports = MongoInfo;

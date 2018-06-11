@@ -14,6 +14,12 @@ module.exports = {
         io.emit('table_process_exitcode', data);
     },
     receiveMongoInfo: (data) => {
-        io.emit('table_mongo_info', data)
+        io.emit('table_mongo_info', data);
+    },
+    receiveMysqlStatus: (data) => {
+        io.emit('table_mysql_status', data);
+    },
+    receiveMysqlProcess: (data) => {
+        io.emit('table_mysql_process', data);
     }
 };

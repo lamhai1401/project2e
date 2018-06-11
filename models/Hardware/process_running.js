@@ -1,7 +1,7 @@
 const connectDB = require('../../foundation/connectDB');
-const moment    = require('../../foundation/moment');
+const moment   = require('../../method').moment;
 
-const ProcessRunning_Schema = new connectDB.Schema({
+const ProcessRunning_Schema = new connectDB.mongoose.Schema({
     pid:        {type: String},
     detail:     {
       user:     {type: String},
@@ -35,5 +35,4 @@ const ProcessRunning_Schema = new connectDB.Schema({
 });
 
 const Running = connectDB.mongoose.model('Process_runnings', ProcessRunning_Schema);
-
 module.exports = Running;

@@ -52,3 +52,14 @@ module.exports = {
 // const str = "{'name': 'DESKTOP-7UMAOKJ', 'system_os': 'Windows', 'number_of_cpus': '8', 'number_of_physical_cpus': '4', 'pcpu': '6.1', 'pmem': '51.0', 'total_proc': '218'}";
 
 // console.log(convertJSON(str));
+
+const str = `
+[{"Id": 2, "User": "zabbix", "Host": "localhost", "db": "zabbix", "Command": "Sleep", "Time": 1, "State": "", "Info": "None", "Progress": 0.0}, 
+{"Id": 3, "User": "zabbix", "Host": "localhost", "db": "zabbix", "Command": "Sleep", "Time": 0, "State": "", "Info": "None", "Progress": 0.0}, 
+{"Id": 4, "User": "zabbix", "Host": "localhost", "db": "zabbix", "Command": "Sleep", "Time": 4, "State": "", "Info": "None", "Progress": 0.0}, 
+{"Id": 5, "User": "zabbix", "Host": "localhost", "db": "zabbix", "Command": "Sleep", "Time": 7, "State": "", "Info": "None", "Progress": 0.0}, 
+{"Id": 7, "User": "zabbix", "Host": "localhost", "db": "zabbix", "Command": "Sleep", "Time": 29, "State": "", "Info": "None", "Progress": 0.0}, 
+{"Id": 8, "User": "zabbix", "Host": "localhost", "db": "zabbix", "Command": "Sleep", "Time": 5, "State": "", "Info": "None", "Progress": 0.0}, 
+{"Id": 10, "User": "zabbix", "Host": "localhost", "db": "zabbix", "Command": "Sleep", "Time": 6, "State": "", "Info": "None", "Progress": 0.0}, 
+{"Id": 6655, "User": "root", "Host": "192.168.3.234:56231", "db": null, "Command": "Query", "Time": 0, "State": "init", "Info": "SHOW FULL PROCESSLIST", "Progress": 0.0}]
+`

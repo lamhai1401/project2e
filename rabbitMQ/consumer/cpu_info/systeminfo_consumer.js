@@ -1,9 +1,9 @@
-const func = require('../func');
-const hardware = require('../../foundation/hardware');
-const convertJSON = require('../../method').string.convertJSON;
-const socket_server = require('../../socket/server');
+const func          = require('../func');
+const hardware      = require('../../../foundation/hardware');
+const convertJSON   = require('../../../method').string.convertJSON;
+const io            = require('../../../socket/events');
 
-function system_consumer(socket_server, conn) {
+function system_consumer(conn) {
     conn.createChannel((err, ch) => {
         // print to cmd if err
         if (func.closeOnErr(err)) return;
@@ -32,16 +32,11 @@ function system_consumer(socket_server, conn) {
 
             ch.consume(q.queue, msg => {
                 ch.ack(msg);
-                console.log('Receive [ %s ] from server', msg.content.toString());
-                socket_server.receiveSystemInfo(convertJSON(msg.content.toString()));
+                //console.log('Receive [ %s ] from server', msg.content.toString());
+                io.receiveSystemInfo(convertJSON(msg.content.toString()));
                 hardware(convertJSON(msg.content.toString()));
             }, {noAck: false});
         });
-
-        setInterval(() => {
-            let io = require('../../socket/events');
-            io.receiveSystemInfo(115)
-        }, 1000);
     });
 };
 
